@@ -15,16 +15,42 @@ class Publisher:
         )
         self.sampler = NewsgroupSampler()
 
+
     def publish(self, message: dict, topic: str):
+        """Publish a single message dict to the given Kafka topic."""
         future = self.producer.send(topic, message)
         result = future.get(timeout=30)
         return result
 
-    def publishbytopics(self):
-        pass
+    def send_messages_to_topics(self):
+        """Fetch messages from the sampler, classify and send to topics.
+
+        Simple classifier: category names containing 'comp', 'sci', or 'rec' are treated as interesting
+        (this is a placeholder; you can replace with a real model).
+        """
+        samples = self.sampler.get_sample()
+        interesting = samples.get("interesting", [])
+        not_interesting = samples.get("not_interesting", [])
+
+        sent = {"interesting": 0, "not_interesting": 0}
+
+        for m in interesting:
+            payload = {"text": m}
+            self.publish(payload, topic="interesting")
+            sent["interesting"] += 1
+
+        for m in not_interesting:
+            payload = {"text": m}
+            self.publish(payload, topic="not_interesting")
+            sent["not_interesting"] += 1
+
+        return sent
         
     
 
 
 publisher = Publisher()
-publisher.publish({"msg": "world"}, topic="intresting")
+
+if __name__ == "__main__":
+    print("Sending sample messages to Kafka...")
+    print(publisher.send_messages_to_topics())

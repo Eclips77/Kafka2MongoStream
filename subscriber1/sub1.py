@@ -30,10 +30,33 @@ def run_consumer(topic:str):
 		coll.insert_one(payload)
 
 
-if __name__ == "__main__":
-	while True:
-		try:
-			run_consumer("intresting")
-		except Exception as e:
-			print("Subscriber1 error:", e)
-			time.sleep(5)
+def run_consumer(topic: str):
+	bootstrap = os.getenv("KAFKA_BOOTSTRAP", "localhost:9092")
+	consumer = KafkaConsumer(topic,
+							 bootstrap_servers=bootstrap.split(","),
+							 value_deserializer=lambda m: json.loads(m.decode("utf-8")),
+							 auto_offset_reset="earliest",
+							 enable_auto_commit=True,
+							 group_id="subscriber1-group")
+	db = get_mongo()
+	coll = db.interesting_messages
+	for msg in consumer:
+		data = msg.value
+		data["timestamp"] = datetime.now(timezone.utc).isoformat()
+		coll.insert_one({"kafka_offset": msg.offset, "value": data})
+
+
+
+
+
+
+
+
+
+# if __name__ == "__main__":
+# 	while True:
+# 		try:
+# 			run_consumer()
+# 		except Exception as e:
+# 			print("Subscriber1 error:", e)
+# 			time.sleep(5)

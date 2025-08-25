@@ -1,0 +1,9 @@
+FROM python:3.11-slim
+WORKDIR /app
+COPY requirements.txt /app/requirements.txt
+RUN pip install --no-cache-dir -r /app/requirements.txt
+COPY subscriber1 /app/subscriber1
+COPY subscriber2 /app/subscriber2
+EXPOSE 8001
+EXPOSE 8002
+CMD ["sh", "-c", "uvicorn subscriber1.sub1api:app --host 0.0.0.0 --port 8001 & uvicorn subscriber2.sub2api:app --host 0.0.0.0 --port 8002"]
