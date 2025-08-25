@@ -20,7 +20,7 @@ def health():
 @app.post("/publish")
 def publish(req: PublishRequest):
 	try:
-		res = publisher.publish(req.message)
+		res = publisher.publish(req.message,"f")
 		return {"status": "sent", "kafka_offset": getattr(res, 'offset', None)}
 	except Exception as e:
 		raise HTTPException(status_code=500, detail=str(e))

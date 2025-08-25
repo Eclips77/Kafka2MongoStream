@@ -14,10 +14,9 @@ class Publisher:
         )
 
     def publish(self, message: dict, topic: str):
-        topic_to_use = topic
-        future = self.producer.send(topic_to_use, message)
+        future = self.producer.send(topic, message)
         result = future.get(timeout=30)
         return result
 
 publisher = Publisher()
-publisher.publish({"msg": "world"}, topic="another_topic")
+publisher.publish({"msg": "world"}, topic="intresting")
