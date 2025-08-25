@@ -1,4 +1,5 @@
 from sklearn.datasets import fetch_20newsgroups
+
 class NewsgroupSampler:
     """""
     Samples messages from selected 'interesting' and 'not interesting' newsgroup categories using the 20 Newsgroups dataset.
