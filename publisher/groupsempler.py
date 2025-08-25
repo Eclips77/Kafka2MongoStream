@@ -53,7 +53,7 @@ class NewsgroupSampler:
             "not_interesting": not_interesting_msgs
         }
 
-# if __name__ == "__main__":
-    # x = NewsGroupSampler()
-    # z = x.get_sample()
-    # print(z)
+if __name__ == "__main__":
+    x = NewsgroupSampler()
+    z = x.get_sample()
+    print(z)
