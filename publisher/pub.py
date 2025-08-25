@@ -1,6 +1,9 @@
 import os
 import json
 from kafka import KafkaProducer
+import logging
+
+logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.INFO)
 
 
 class Publisher:
