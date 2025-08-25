@@ -30,10 +30,10 @@ def run_consumer(topic:str):
 		coll.insert_one(payload)
 
 
-# if __name__ == "__main__":
-# 	while True:
-# 		try:
-# 			run_consumer()
-# 		except Exception as e:
-# 			print("Subscriber1 error:", e)
-# 			time.sleep(5)
+if __name__ == "__main__":
+	while True:
+		try:
+			run_consumer("intresting")
+		except Exception as e:
+			print("Subscriber1 error:", e)
+			time.sleep(5)

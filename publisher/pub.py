@@ -1,6 +1,7 @@
 import os
 import json
 from kafka import KafkaProducer
+from publisher.groupsempler import NewsgroupSampler
 import logging
 
 logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.INFO)
@@ -12,11 +13,16 @@ class Publisher:
             bootstrap_servers=bootstrap.split(","),
             value_serializer=lambda v: json.dumps(v).encode("utf-8")
         )
+        self.sempler = NewsgroupSampler()
 
     def publish(self, message: dict, topic: str):
         future = self.producer.send(topic, message)
         result = future.get(timeout=30)
         return result
+
+    def publishbytopics(self):
+        pass
+
 
 publisher = Publisher()
 publisher.publish({"msg": "world"}, topic="intresting")
