@@ -13,7 +13,7 @@ class Publisher:
             bootstrap_servers=bootstrap.split(","),
             value_serializer=lambda v: json.dumps(v).encode("utf-8")
         )
-        self.sempler = NewsgroupSampler()
+        self.sampler = NewsgroupSampler()
 
     def publish(self, message: dict, topic: str):
         future = self.producer.send(topic, message)
@@ -22,6 +22,8 @@ class Publisher:
 
     def publishbytopics(self):
         pass
+        
+    
 
 
 publisher = Publisher()
